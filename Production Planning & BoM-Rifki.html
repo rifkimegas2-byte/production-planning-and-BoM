@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<!-- Production Planning & BoM prototype. Author and owner: Rifki Mega Saputra / rifki.megas2@gmail.com. Confidential assessment material. Do not copy, redistribute or resubmit as your own work. -->
+<html lang="en" data-wm="Rifki Mega Saputra / rifki.megas2@gmail.com"><head><meta charset="utf-8">
+<meta name="author" content="Rifki Mega Saputra / rifki.megas2@gmail.com">
+<meta name="copyright" content="Rifki Mega Saputra / rifki.megas2@gmail.com">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Production Planning &amp; BoM</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
+<style>
+:root{--canvas:#F4F6F8;--surface:#fff;--subtle:#F7F8FA;--border:#E3E7EB;--divider:#EDF0F3;--text:#23272B;--text2:#626B75;--primary:#285E9E;--primary-h:#214F86;--soft:#E5F2FC;--ptext:#245C87;--ok:#187A59;--oks:#D8F0E5;--warn:#A65B08;--warns:#FFF1DF;--wb:#E9C99E;--bad:#C43C45;--bads:#FDEBED;--pur:#7652A6;--purs:#F2ECFA;--neu:#EDF0F3;--sh:0 3px 14px rgb(25 40 55/7%);--font:"Inter","Segoe UI",Arial,sans-serif;box-sizing:border-box}
+*,*::before,*::after{box-sizing:inherit}
+html,body{height:100%;margin:0}
+body{background:var(--canvas);color:var(--text);font:400 14px/20px var(--font);padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.app{display:flex;min-height:100%}
+.side{width:248px;flex:none;background:var(--surface);border-right:1px solid var(--border);padding:16px;position:sticky;top:0;height:100vh;overflow:auto}
+.brand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:16px;padding:4px 4px 16px}
+.mark{width:28px;height:28px;border:1px dashed var(--text2);border-radius:6px;display:grid;place-items:center;font-size:9px;color:var(--text2)}
+.nl{font-size:12px;color:var(--text2);padding:12px 8px 4px;font-weight:500}
+.nav{display:block;width:100%;height:42px;border:0;background:none;border-radius:8px;padding:0 12px;color:var(--text);font:500 14px var(--font);cursor:pointer;text-align:left}
+.nav:hover{background:var(--subtle)}.nav[aria-current=page]{background:var(--primary);color:#fff}
+.main{flex:1;min-width:0}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;height:64px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;padding:0 24px}
+.top .n{margin-left:auto;font-size:12px;color:var(--text2)}#menu{display:none}
+.page{padding:24px;display:flex;flex-direction:column;gap:24px}
+.head{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between}
+h1{font-size:24px;line-height:32px;font-weight:600;margin:0}h2{font-size:18px;line-height:26px;font-weight:600;margin:0}
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+button,select,input,textarea{font:inherit;color:var(--text)}
+select,input,textarea{background:var(--surface);border:1px solid var(--border);border-radius:8px;height:38px;padding:0 10px;max-width:100%}
+textarea{height:auto;padding:8px 10px;width:100%}
+.btn{height:38px;padding:0 16px;border-radius:8px;border:1px solid var(--border);background:var(--surface);font-weight:500;cursor:pointer}
+.btn:hover{background:var(--subtle)}.btn.p{background:var(--primary);border-color:var(--primary);color:#fff}.btn.p:hover{background:var(--primary-h)}
+.btn.s{height:32px;padding:0 12px}.btn.d{color:var(--bad)}.btn:disabled{opacity:.5;cursor:not-allowed}
+:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:var(--sh);padding:18px;min-height:136px;display:flex;flex-direction:column;gap:6px}
+.card .l{color:var(--text2);font-weight:500}.card .v{font-size:32px;line-height:40px;font-weight:600;color:var(--ptext);font-variant-numeric:tabular-nums;overflow-wrap:anywhere}.card .h{font-size:12px;color:var(--text2);margin-top:auto}
+.banner{background:var(--warns);border:1px solid var(--wb);border-radius:12px;padding:16px 20px;display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.banner .btn{margin-left:auto}
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:var(--sh);padding:20px;min-width:0}
+.ph{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}
+.tabs{display:flex;gap:20px;border-bottom:1px solid var(--divider);margin-bottom:8px;overflow-x:auto}
+.tab{border:0;background:none;padding:10px 0;color:var(--text2);font-weight:500;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap}
+.tab[aria-selected=true]{color:var(--text);font-weight:600;border-color:var(--primary)}
+.scroll{overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:640px}
+th{background:var(--subtle);text-align:left;font-weight:500;color:var(--text2);height:44px;padding:0 14px;white-space:nowrap}
+td{height:52px;padding:6px 14px;border-bottom:1px solid var(--divider);vertical-align:middle}
+tr:hover td{background:var(--subtle)}.r{text-align:right;font-variant-numeric:tabular-nums}.u{color:var(--text2);font-size:12px;margin-left:4px}
+.badge{display:inline-block;height:24px;line-height:24px;padding:0 10px;border-radius:999px;font-size:12px;font-weight:600;white-space:nowrap}
+.b-ok{background:var(--oks);color:var(--ok)}.b-warn{background:var(--warns);color:var(--warn)}.b-bad{background:var(--bads);color:var(--bad)}.b-info{background:var(--soft);color:var(--ptext)}.b-pur{background:var(--purs);color:var(--pur)}.b-n{background:var(--neu);color:var(--text2)}
+.qty{width:96px;text-align:right}.lk{border:0;background:none;color:var(--ptext);cursor:pointer;font-weight:500;padding:0}
+.tree td{background:var(--subtle);font-size:13px}
+.empty{padding:32px 16px;text-align:center;color:var(--text2)}.empty b{display:block;color:var(--text);margin-bottom:4px}
+dialog{border:1px solid var(--border);border-radius:12px;background:var(--surface);color:var(--text);box-shadow:0 8px 24px rgb(25 40 55/14%);width:min(520px,94vw);padding:20px}
+dialog::backdrop{background:rgb(20 30 40/45%)}
+.f{display:flex;flex-direction:column;gap:6px;margin:12px 0}.f label{font-weight:500}.err{color:var(--bad);font-size:12px;margin:6px 0}
+.row{display:flex;gap:8px;align-items:center;margin-bottom:8px}.row select{flex:1;min-width:0}.row input{width:90px}
+.acts{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}
+.toast{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));background:var(--text);color:var(--surface);padding:10px 14px;border-radius:8px}
+@media (max-width:1279px){.cards{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:1023px){.side{position:fixed;z-index:20;left:0;top:0;transform:translateX(-100%);transition:transform .15s}.side.open{transform:none}#menu{display:inline-block}}
+@media (max-width:767px){.cards{grid-template-columns:1fr}.page{padding:16px}.top{padding:0 16px}.top .n{display:none}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+.blk{border:1px solid var(--border);background:var(--subtle);border-radius:10px;padding:8px 12px;margin-bottom:10px}
+.blk small{display:block;color:var(--text2);font-size:12px}.blk b{font-weight:600}
+.sch{width:100%;margin:4px 0 12px}
+.nav{display:flex;align-items:center}.nav .chev{margin-left:auto;font-size:11px}
+.nav.par[data-on]{background:var(--primary);color:#fff}
+.sub{margin:2px 0 8px 18px;padding-left:10px;border-left:2px solid var(--divider)}
+.sub .nav{height:38px;font-weight:400}.sub .nav[aria-current=page]{font-weight:500}
+.ic{width:20px;height:20px;color:var(--ptext);flex:none}.card .l{display:flex;align-items:center;gap:8px}
+.bar{display:inline-block;width:84px;height:7px;border-radius:4px;background:var(--neu);vertical-align:middle;overflow:hidden}.bar i{display:block;height:100%;border-radius:4px}
+.th{width:26px;height:26px;border:1px solid var(--border);border-radius:6px;display:inline-grid;place-items:center;margin-right:10px;color:var(--text2);vertical-align:middle;background:var(--subtle)}
+.cnt{margin-left:6px;font-size:12px;padding:0 7px;border-radius:999px;background:var(--neu);color:var(--text2)}
+.cat-RM{color:var(--ptext)}.cat-SFG{color:var(--pur)}.cat-FG{color:var(--ok)}
+</style></head><body>
+<div class="app">
+<aside class="side" id="side" aria-label="Main navigation"><div class="brand"><div class="mark" aria-hidden="true">Logo</div>[Product name]</div>
+<input class="sch" id="sq" type="search" placeholder="Search menu" aria-label="Search menu"><nav id="nav"></nav></aside>
+<div class="main"><header class="top"><button class="btn" id="menu" aria-label="Toggle navigation">Menu</button><span class="n">Sample data. Changes live in this browser tab only.</span></header><main class="page" id="page"></main><footer class="u" style="padding:0 24px 24px">Prototype by Rifki Mega Saputra / rifki.megas2@gmail.com. Sample data. Confidential, do not redistribute.</footer></div></div>
+<dialog id="dlg"></dialog>
+<script>
+const WM='Rifki Mega Saputra / rifki.megas2@gmail.com';console.info('Production Planning prototype, owner: '+WM);
+const $=s=>document.querySelector(s),T={RM:'Raw material',SFG:'Semi-finished',FG:'Finished good'},BT={RM:'n',SFG:'pur',FG:'info'};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const nf=(n,u)=>new Intl.NumberFormat('en-US',{maximumFractionDigits:u==='pcs'?0:2}).format(n);
+const S={v:'plan',tab:'FG',uid:100,conf:null,open:{},ack:false,uplift:0,waste:[],prod:{},plan:{},
+items:[{id:'beef',n:'Beef mince',t:'RM',u:'kg',s:22},{id:'bun',n:'Burger bun',t:'RM',u:'pcs',s:80},{id:'mayo',n:'Mayonnaise',t:'RM',u:'kg',s:3},{id:'chili',n:'Chili paste',t:'RM',u:'kg',s:1.2},{id:'sugar',n:'Sugar',t:'RM',u:'kg',s:4},{id:'chick',n:'Chicken pieces',t:'RM',u:'kg',s:28},{id:'bread',n:'Breading mix',t:'RM',u:'kg',s:6},
+{id:'patty',n:'Burger patty',t:'SFG',u:'pcs',s:40},{id:'sauce',n:'House sauce',t:'SFG',u:'kg',s:1.5},
+{id:'burger',n:'Classic burger',t:'FG',u:'pcs',s:15,avg:90},{id:'fc',n:'Fried chicken piece',t:'FG',u:'pcs',s:60,avg:200}],
+rec:{patty:{out:1,in:[{id:'beef',q:.12}]},sauce:{out:1,in:[{id:'mayo',q:.6},{id:'chili',q:.25},{id:'sugar',q:.1}]},burger:{out:1,in:[{id:'patty',q:1},{id:'sauce',q:.03},{id:'bun',q:1}]},fc:{out:1,in:[{id:'chick',q:.15},{id:'bread',q:.04},{id:'chili',q:.01}]}}};
+const MIN={beef:8,bun:30,mayo:2,chili:1,sugar:2,chick:10,bread:3,patty:20,sauce:2,burger:20,fc:50};S.items.forEach(i=>i.m=MIN[i.id]||0);S.st='All';S.g={};S.sq='';S.pl=['burger','fc'];S.bat=[];S.bn=0;S.cur=null;S.revs=[];S.tmp={};S.rvm=false;S.issued=false;
+const hhmm=()=>new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+const it=id=>S.items.find(i=>i.id===id),fgs=()=>S.pl.map(it).filter(Boolean);
+const planQ=i=>S.plan[i.id]??Math.round(i.avg*(1+S.uplift/100));
+const src=i=>S.plan[i.id]!=null?'Manual':S.uplift?'Uplift':'Suggested';
+const badge=(c,t)=>`<span class="badge b-${c}">${t}</span>`;
+function toast(m){const t=document.createElement('div');t.className='toast';t.setAttribute('role','status');t.textContent=m;document.body.append(t);setTimeout(()=>t.remove(),2400)}
+// BoM explosion: existing SFG stock netted once, only shortfalls expand
+function explode(){const av={};S.items.forEach(i=>av[i.id]=i.s);const rm={},task={},fg={},by={};
+ const add=(id,q,rt)=>{const r=S.rec[id];if(!r)return;r.in.forEach(x=>{const n=q/r.out*x.q,c=it(x.id);if(!c)return;
+  if(c.t==='RM'){rm[c.id]=(rm[c.id]||0)+n;const b=by[c.id]=by[c.id]||{};b[rt]=(b[rt]||0)+n}else{const use=Math.min(av[c.id],n);av[c.id]-=use;const net=n-use;if(net>1e-9){task[c.id]=(task[c.id]||0)+net;add(c.id,net,rt)}}})};
+ fgs().forEach(f=>{const q=planQ(f);fg[f.id]=q;if(S.rec[f.id])add(f.id,q,f.id)});return{rm,task,fg,by}}
+const shorts=()=>Object.entries(explode().rm).filter(([k,v])=>v>it(k).s+1e-9);
+const planned=()=>S.cur||(()=>{const e=explode();return{...e.fg,...e.task}})();
+function cyc(id,ins){const seen=new Set();const walk=x=>{if(x===id)return true;if(seen.has(x))return false;seen.add(x);return(S.rec[x]?.in||[]).some(y=>walk(y.id))};return ins.some(y=>walk(y.id))}
+const usedIn=id=>Object.keys(S.rec).filter(k=>S.rec[k].in.some(x=>x.id===id));
+function head(t,a=''){return`<div class="head"><h1>${t}</h1><div class="tools">${a}</div></div>`}
+function cards(a){return`<div class="cards">${a.map(([l,v,h])=>`<div class="card"><span class="l"><svg class="ic" viewBox="0 0 20 20" aria-hidden="true"><rect x="3" y="3" width="6" height="6" rx="1.5" fill="currentColor"/><rect x="11" y="3" width="6" height="6" rx="1.5" fill="currentColor" opacity=".5"/><rect x="3" y="11" width="6" height="6" rx="1.5" fill="currentColor" opacity=".5"/><rect x="11" y="11" width="6" height="6" rx="1.5" fill="currentColor"/></svg>${l}</span><span class="v">${v}</span><span class="h">${h}</span></div>`).join('')}</div>`}
+function banner(){const s=shorts();return!s.length||S.conf?'':`<div class="banner" role="alert"><b>${s.length} raw material${s.length>1?'s are':' is'} short for this plan.</b><span>${s.map(([k])=>esc(it(k).n)).join(', ')}. Batches starting short are blocked unless a manager overrides with a reason.</span><button class="btn" data-go="req">View detail</button></div>`}
+const missing=()=>fgs().filter(f=>!S.rec[f.id]);
+
+function dem(id,q,a){const r=S.rec[id];if(!r)return a;r.in.forEach(x=>{const c=it(x.id);if(c&&c.t==='SFG'){const n=q/r.out*x.q;a[c.id]=(a[c.id]||0)+n;dem(c.id,n,a)}});return a}
+function applyRev(ch,r){ch.forEach(([k,v])=>{const o=S.cur[k],a=dem(k,v,{}),b=dem(k,o,{});for(const x in a)S.cur[x]=Math.max(0,(S.cur[x]||0)+a[x]-(b[x]||0));S.cur[k]=v;S.revs.push({id:k,from:o,to:v,r})});S.rvm=false;S.tmp={};toast('Revision saved. Original baseline kept.');render()}
+function planView(){const p=planned(),e=explode(),ed=!S.conf,ip=ed||S.rvm;
+ const line=(i,fg)=>{const pl=p[i.id]||0,ac=S.prod[i.id]||0,r=S.rec[i.id],o=S.conf&&S.conf[i.id]!=null&&S.conf[i.id]!==pl?`<div class="u">Original ${nf(S.conf[i.id],i.u)}</div>`:'';
+  return`<tr><td><b>${esc(i.n)}</b></td><td>${badge(BT[i.t],T[i.t])}</td><td class="r">${nf(i.s,i.u)}<span class="u">${i.u}</span></td><td class="r">${fg&&ip?`<input class="qty" type="number" min="0" value="${ed?planQ(i):(S.tmp[i.id]??pl)}" data-${ed?'q':'rq'}="${i.id}" aria-label="Quantity for ${esc(i.n)}"><span class="u">${i.u}</span>`:`${nf(pl,i.u)}<span class="u">${i.u}</span>`}${o}</td><td class="r">${nf(ac,i.u)}<span class="u">${i.u}</span></td><td>${fg?badge(src(i)==='Manual'?'warn':src(i)==='Uplift'?'info':'n',src(i)):badge('n','Derived task')}</td>
+  <td>${r?`<button class="btn s p" data-start="${i.id}" ${S.conf?'':'disabled title="Confirm the plan first"'}>Start batch</button>`:badge('bad','No recipe')} ${fg&&ed?`<button class="btn s d" data-lrm="${i.id}" aria-label="Remove ${esc(i.n)} from plan">Remove</button>`:''}</td></tr>`};
+ const rows=fgs().map(f=>line(f,1)).join('')+Object.keys(p).filter(k=>it(k)&&it(k).t!=='FG').map(k=>line(it(k),0)).join('');
+ const nT=Object.keys(p).filter(k=>it(k)&&it(k).t!=='FG').length,done=Object.keys(p).filter(k=>(S.prod[k]||0)>=p[k]&&p[k]>0).length;
+ const avail=S.items.filter(i=>i.t==='FG'&&!S.pl.includes(i.id));
+ const btns=ed?`<button class="btn" data-reset="1">Reset plan</button><button class="btn p" id="confirm">Confirm plan</button>`:S.rvm?`<button class="btn" id="rvx">Discard changes</button><button class="btn p" id="rvs">Save revision</button>`:`${badge('ok','Confirmed, baseline locked')}<button class="btn" id="revise">Revise plan</button><button class="btn d" id="cancelplan" ${S.issued?'disabled title="A batch has started, so the plan cannot be cancelled"':''}>Cancel plan</button>`;
+ return head('Daily production plan',`<span class="u">Outlet A, ${new Date().toISOString().slice(0,10)}</span>${ed?`<label for="up">Uplift %</label><input id="up" type="number" min="0" max="100" value="${S.uplift}" style="width:80px">`:''}${btns}`)+banner()+
+ cards([['Finished goods planned',fgs().length,'Lines in this plan'],['Semi-finished tasks',nT,'Only what stock does not cover'],['Raw materials short',shorts().length,shorts().length?'See Requirements for actions':'Covered by current stock'],['Lines fulfilled',`${done} / ${Object.keys(p).length}`,'Actual output reached planned']])+
+ `<section class="panel"><div class="ph"><h2>Planned vs actual production</h2>${ed?`<div class="tools"><select id="al" aria-label="Finished good to add" ${avail.length?'':'disabled'}>${avail.length?opts(avail):'<option>All finished goods added</option>'}</select><button class="btn" id="addl" ${avail.length?'':'disabled'}>Add line</button></div>`:''}</div><div class="scroll" tabindex="0" role="region" aria-label="Production table"><table><thead><tr><th>Item</th><th>Type</th><th class="r">Outlet stock</th><th class="r">Planned</th><th class="r">Actual</th><th>Source</th><th>Action</th></tr></thead><tbody>${rows||'<tr><td colspan=7><div class="empty"><b>No lines in this plan</b>Use Add line to pick a finished good.</div></td></tr>'}</tbody></table></div>
+ ${missing().length?`<p class="err">${missing().map(f=>esc(f.n)).join(', ')} has no recipe, so requirements cannot be calculated. Add one in Recipes.</p>`:''}
+ <p class="u" style="margin:12px 0 0"><b>Source:</b> Suggested = 4-week same-weekday average from Items. Uplift = that average plus the Uplift %. Manual = a number you typed. Derived task = semi-finished quantity calculated from recipes. Revising after confirmation keeps the original target and cannot go below output already produced.</p></section>
+ ${S.bat.length?`<section class="panel"><div class="ph"><h2>Batches</h2></div><div class="scroll" tabindex="0" role="region" aria-label="Batches"><table><thead><tr><th>Batch</th><th>Item</th><th class="r">Target</th><th>Started</th><th>Status</th><th class="r">Output</th><th class="r">Yield</th><th>Action</th></tr></thead><tbody>${S.bat.slice().reverse().map(b=>{const c=it(b.id)||{n:b.id,u:''};return`<tr><td><b>${b.no}</b></td><td>${esc(c.n)}</td><td class="r">${nf(b.q,c.u)}<span class="u">${c.u}</span></td><td>${b.t}</td><td>${badge(b.st==='In progress'?'info':b.st==='Failed'?'bad':'ok',b.st)}</td><td class="r">${b.out==null?'n/a':nf(b.out,c.u)+'<span class="u">'+c.u+'</span>'}</td><td class="r">${b.out==null?'n/a':(b.out/b.q*100).toFixed(0)+'%'}</td><td>${b.st==='In progress'?`<button class="btn s p" data-out="${b.no}">Record output</button>`:''}</td></tr>`}).join('')}</tbody></table></div></section>`:''}
+ ${S.revs.length?`<section class="panel"><div class="ph"><h2>Revision history</h2></div><div class="scroll"><table style="min-width:480px"><thead><tr><th>Item</th><th class="r">Original</th><th class="r">Revised</th><th>Reason</th></tr></thead><tbody>${S.revs.map(v=>`<tr><td>${esc(it(v.id)?.n||v.id)}</td><td class="r">${nf(v.from,it(v.id)?.u)}</td><td class="r">${nf(v.to,it(v.id)?.u)}</td><td>${esc(v.r)}</td></tr>`).join('')}</tbody></table></div></section>`:''}`}
+function reqView(){const e=explode(),rows=Object.entries(e.rm).map(([k,v])=>{const c=it(k),sh=Math.max(0,v-c.s),o=S.open[k];
+ return`<tr><td><b>${esc(c.n)}</b> <button class="lk" data-x="${k}" aria-expanded="${!!o}">${o?'Hide':'Show'} source</button></td><td class="r">${nf(v,c.u)}<span class="u">${c.u}</span></td><td class="r">${nf(c.s,c.u)}<span class="u">${c.u}</span></td><td class="r">${nf(sh,c.u)}<span class="u">${c.u}</span></td><td>${sh>0?badge('bad','Short'):badge('ok','Sufficient')}</td><td>${sh>0?`<button class="btn s" data-adj="${k}">Adjust stock</button> <button class="btn s" data-go="plan">${S.conf?'Revise plan':'Edit plan'}</button>`:''}</td></tr>${o?`<tr class="tree"><td colspan=6>Needed by: ${Object.entries(e.by[k]||{}).map(([f,q])=>esc(it(f)?it(f).n:f)+' '+nf(q,c.u)+' '+c.u).join(', ')}. Each figure is the raw material that plan line consumes, expanded through recipes; semi-finished stock is netted once, so the figures add up to Required.</td></tr>`:''}`}).join('');
+ const t=Object.entries(e.task).map(([k,v])=>`<tr><td>${esc(it(k).n)}</td><td class="r">${nf(v,it(k).u)}<span class="u">${it(k).u}</span></td><td class="r">${nf(it(k).s,it(k).u)}<span class="u">${it(k).u}</span></td></tr>`).join('');
+ return head('Material requirements')+'<p style="margin:0;color:var(--text2)">Answers one question: can the outlet make today\'s plan with the stock it has? It expands every planned finished good through its recipes, then compares the raw materials needed with stock and lists the semi-finished items to prepare first.</p>'+banner()+`<section class="panel"><div class="ph"><h2>Raw materials vs outlet stock</h2></div><div class="scroll" tabindex="0" role="region" aria-label="Requirements"><table><thead><tr><th>Raw material</th><th class="r">Required</th><th class="r">Available</th><th class="r">Shortfall</th><th>Status</th><th>Action</th></tr></thead><tbody>${rows||'<tr><td colspan=6><div class="empty"><b>Nothing required</b>Plan lines have no recipes yet.</div></td></tr>'}</tbody></table></div></section>
+ <section class="panel"><div class="ph"><h2>Semi-finished preparation needed</h2></div><div class="scroll"><table style="min-width:420px"><thead><tr><th>SFG</th><th class="r">To prepare</th><th class="r">Stock now</th></tr></thead><tbody>${t||'<tr><td colspan=3><div class="empty"><b>No preparation needed</b>Existing SFG stock covers the plan.</div></td></tr>'}</tbody></table></div></section>`}
+
+function itemsView(){const rows=S.items.filter(i=>i.t===S.tab).map(i=>`<tr><td><b>${esc(i.n)}</b></td><td>${i.u}</td><td class="r">${i.m?nf(i.m,i.u)+'<span class="u">'+i.u+'</span>':'Not set'}</td><td class="r">${i.t==='FG'?nf(i.avg||0,i.u):'n/a'}</td><td>${i.t==='RM'?badge('n','Bought'):S.rec[i.id]?badge('ok','Has recipe')+' <button class="lk" data-rec="'+i.id+'">View</button>':badge('warn','No recipe')+' <button class="lk" data-nrec="'+i.id+'">Create</button>'}</td><td><button class="btn s" data-edit="${i.id}">Edit</button> <button class="btn s d" data-del="${i.id}">Delete</button></td></tr>`).join('');
+ return head('Items',`<button class="btn p" data-new="1">Add item</button>`)+`<section class="panel"><div class="tabs" role="tablist">${['RM','SFG','FG'].map(t=>`<button class="tab" role="tab" aria-selected="${S.tab===t}" data-tab="${t}">${T[t]}s<span class="cnt">${S.items.filter(i=>i.t===t).length}</span></button>`).join('')}</div>
+ <div class="scroll" tabindex="0" role="region" aria-label="Items"><table><thead><tr><th>Name</th><th>Base unit</th><th class="r">Min. threshold</th><th class="r">4-wk avg sold</th><th>Recipe</th><th>Actions</th></tr></thead><tbody>${rows||`<tr><td colspan=6><div class="empty"><b>No ${T[S.tab].toLowerCase()} items</b><button class="btn p" data-new="1">Add one</button></div></td></tr>`}</tbody></table></div></section>`}
+
+function recView(){const rows=Object.keys(S.rec).map(id=>{const r=S.rec[id],o=it(id),op=S.open[id];
+ return`<tr><td><b>${esc(o.n)}</b></td><td>${badge(BT[o.t],T[o.t])}</td><td class="r">${nf(r.out,o.u)}<span class="u">${o.u}</span></td><td>${r.in.length} inputs <button class="lk" data-x="${id}" aria-expanded="${!!op}">${op?'Hide':'Show'}</button></td><td><button class="btn s" data-rec="${id}">Edit</button> <button class="btn s d" data-rdel="${id}">Delete</button></td></tr>${op?`<tr class="tree"><td colspan=5>${r.in.map(x=>{const c=it(x.id);return`${badge(BT[c.t],c.t)} ${esc(c.n)}: ${nf(x.q,c.u)} ${c.u}`+(c.t==='SFG'?' (has its own recipe)':'')}).join('<br>')}</td></tr>`:''}`}).join('');
+ return head('Recipes / BoM',`<button class="btn p" data-rec="">New recipe</button>`)+`<section class="panel"><div class="scroll" tabindex="0" role="region" aria-label="Recipes"><table><thead><tr><th>Produces</th><th>Type</th><th class="r">Output per batch</th><th>Ingredients</th><th>Actions</th></tr></thead><tbody>${rows||'<tr><td colspan=5><div class="empty"><b>No recipes yet</b>A recipe says what a batch of an SFG or FG consumes.</div></td></tr>'}</tbody></table></div></section>`}
+
+function wasteView(){const pl=planned(),ks=Object.keys(pl).filter(k=>pl[k]>0);
+ const vr=ks.map(k=>{const c=it(k),a=S.prod[k]||0,d=a-pl[k],pc=d/pl[k]*100,w=S.waste.filter(x=>x.id===k&&!x.auto).reduce((s,x)=>s+x.q,0),lo=S.waste.filter(x=>x.id===k&&x.auto).reduce((s,x)=>s+x.q,0),bs=S.bat.filter(x=>x.id===k&&x.out!=null),yl=bs.length?bs.reduce((s,x)=>s+x.out,0)/bs.reduce((s,x)=>s+x.q,0)*100:null;
+ return`<tr><td><b>${esc(c.n)}</b></td><td class="r">${nf(pl[k],c.u)}<span class="u">${c.u}</span></td><td class="r">${nf(a,c.u)}<span class="u">${c.u}</span></td><td class="r">${d>0?'+':''}${nf(d,c.u)}<span class="u">${c.u}</span></td><td class="r">${pc.toFixed(1)}%</td><td class="r">${nf(w,c.u)}<span class="u">${c.u}</span></td><td class="r">${nf(lo,c.u)}<span class="u">${c.u}</span></td><td class="r">${yl==null?'n/a':yl.toFixed(0)+'%'}</td><td>${!S.conf?badge('n','Plan not confirmed'):Math.abs(pc)<=3?badge('ok','Within ±3%'):pc<0?badge('bad','Under target'):badge('warn','Above target')}</td></tr>`}).join('');
+ const wr=S.waste.map(w=>`<tr><td>${w.t||''}</td><td>${esc(it(w.id).n)}</td><td class="r">${nf(w.q,it(w.id).u)}<span class="u">${it(w.id).u}</span></td><td class="r">${w.auto?w.pct.toFixed(0)+'%':'n/a'}</td><td>${esc(w.r)}</td><td>${esc(w.note||'')}</td><td>${w.auto?badge('info','Process loss, auto'):badge('n','Stock waste, manual')}</td><td>${w.b||'n/a'}</td></tr>`).join('');
+ return head('Waste & variance',`<button class="btn p" id="wnew">Record waste</button>`)+cards([['Items tracked',ks.length,'Planned vs actual'],['Waste entries',S.waste.length,'Each reduces stock once'],['Out of tolerance',S.conf?ks.filter(k=>Math.abs(((S.prod[k]||0)-pl[k])/pl[k])>.03).length:'n/a',S.conf?'Beyond ±3%':'Confirm the plan first'],['Under target',S.conf?ks.filter(k=>(S.prod[k]||0)<pl[k]).length:'n/a','Actual below planned']])+
+ `<section class="panel"><div class="ph"><h2>Planned vs actual output</h2></div><div class="scroll" tabindex="0" role="region" aria-label="Variance"><table><thead><tr><th>Item</th><th class="r">Planned</th><th class="r">Actual</th><th class="r">Difference</th><th class="r">Variance</th><th class="r">Stock waste</th><th class="r">Process loss</th><th class="r">Yield</th><th>Status</th></tr></thead><tbody>${vr||'<tr><td colspan=9><div class="empty"><b>Nothing to compare</b>Add recipes and plan quantities first.</div></td></tr>'}</tbody></table></div>
+ <p class="u" style="margin:12px 0 0"><b>How to read this.</b> Planned is the confirmed target (the revised quantity if the plan was revised; the original stays in the plan table). Actual is usable output posted since. Variance = (Actual - Planned) / Planned x 100; within +/-3% is on target. Stock waste is entered manually and reduces stock once. Process loss is recorded automatically when a batch's usable output is below its batch target (a zero output is a failed batch); it explains lost output and does not deduct stock again, because inputs were consumed when the batch started. Yield = usable output / batch target across completed batches. Loss % = process loss / batch target. Under-yield lowers Actual and also shows as process loss, so do not add the two. Quantities are per item and are never added across different units.</p></section>
+ <section class="panel"><div class="ph"><h2>Waste log</h2></div><div class="scroll"><table style="min-width:480px"><thead><tr><th>Time</th><th>Item</th><th class="r">Quantity</th><th class="r">Loss %</th><th>Reason</th><th>Note</th><th>Type</th><th>Batch</th></tr></thead><tbody>${wr||'<tr><td colspan=8><div class="empty"><b>No waste recorded</b>Use Record waste for spoilage, drops or over-prep.</div></td></tr>'}</tbody></table></div></section>`}
+
+const TH='<span class="th" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 14 14"><rect x="2" y="2" width="10" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></span>';
+const lvl=i=>!i.m?{k:'n',t:'No threshold',p:0}:i.s<i.m?{k:'bad',t:'Critical',p:i.s/(2*i.m)}:i.s<1.5*i.m?{k:'warn',t:'Low',p:i.s/(2*i.m)}:{k:'ok',t:'Optimal',p:Math.min(1,i.s/(2*i.m))};
+function stockView(){const q=S.sq.toLowerCase(),all=S.items.map(i=>({i,l:lvl(i)})),c=t=>all.filter(x=>x.l.t===t).length;
+ const rows=all.filter(x=>(S.st==='All'||x.l.t===S.st)&&x.i.n.toLowerCase().includes(q)).map(({i,l})=>{const pc=Math.round(l.p*100);return`<tr><td>${TH}<b>${esc(i.n)}</b></td><td class="cat-${i.t}">${T[i.t]}</td><td class="r">${nf(i.s,i.u)}<span class="u">${i.u}</span></td><td class="r">${i.m?nf(i.m,i.u)+'<span class="u">'+i.u+'</span>':'Not set'}</td><td><span class="bar" role="img" aria-label="${pc}% of target level"><i style="width:${pc}%;background:var(--${l.k==='n'?'neu':l.k})"></i></span></td><td>${badge(l.k,l.t)}</td><td><button class="btn s" data-adj="${i.id}">Adjust stock</button></td></tr>`}).join('');
+ return head('Stock levels','<button class="btn p" data-new="1">Add item</button>')+cards([['Items tracked',S.items.length,'Across RM, SFG and FG'],['Critical',c('Critical'),'Below minimum threshold'],['Low',c('Low'),'Within 1.5x of minimum'],['Optimal',c('Optimal'),'At or above 1.5x minimum']])+
+ `<section class="panel"><div class="ph"><h2>Outlet stock</h2><input id="ss" type="search" placeholder="Search item" aria-label="Search items" value="${esc(S.sq)}"></div><div class="tabs" role="tablist">${['All','Critical','Low','Optimal'].map(t=>`<button class="tab" role="tab" aria-selected="${S.st===t}" data-st="${t}">${t}<span class="cnt">${t==='All'?all.length:c(t)}</span></button>`).join('')}</div>
+ <div class="scroll" tabindex="0" role="region" aria-label="Stock table"><table><thead><tr><th>Item</th><th>Category</th><th class="r">Current stock</th><th class="r">Min. threshold</th><th>Stock level</th><th>Status</th><th>Action</th></tr></thead><tbody>${rows||'<tr><td colspan=7><div class="empty"><b>No items match</b>Clear the search or pick another tab.</div></td></tr>'}</tbody></table></div>
+ <p class="u" style="margin:12px 0 0">The bar shows stock against twice the minimum threshold. Critical is below the minimum; Low is below 1.5x the minimum. Production and waste update stock automatically. Use Adjust stock for deliveries and counts.</p></section>`}
+function adjDlg(id){const c=it(id);const d=dlg(`<h2>Adjust stock: ${esc(c.n)}</h2><p class="u">Current: ${nf(c.s,c.u)} ${c.u}</p><form id="fm"><div class="f"><label for="nq">New counted quantity (${c.u})</label><input id="nq" type="number" min="0" step="any" value="${c.s}"></div><div class="f"><label for="ar">Reason</label><select id="ar"><option>Delivery received</option><option>Stock count correction</option><option>Transfer</option></select></div><div id="e"></div><div class="acts"><button type="button" class="btn" id="cx">Cancel</button><button class="btn p">Save</button></div></form>`);
+ $('#fm').onsubmit=e=>{e.preventDefault();const v=+$('#nq').value;if(!(v>=0)){$('#e').innerHTML='<p class="err">Enter zero or more.</p>';return}const df=v-c.s;c.s=v;d.close();toast('Stock updated ('+(df>=0?'+':'')+nf(df,c.u)+' '+c.u+')');render()}}
+const G=[['Production',[['plan','Daily plan'],['req','Requirements'],['waste','Waste & variance']]],['Inventory & Stock',[['stock','Stock levels']]],['Master data',[['items','Items'],['rec','Recipes / BoM']]]];
+const has=g=>G.find(x=>x[0]===g)[1].some(l=>l[0]===S.v);
+function navRender(){const q=$('#sq').value.toLowerCase();$('#nav').innerHTML=G.map(([g,ls])=>{const f=q?ls.filter(l=>l[1].toLowerCase().includes(q)):ls;if(!f.length)return'';const o=q||(S.g[g]??has(g));
+ return`<button class="nav par" data-g="${esc(g)}" ${has(g)?'data-on="1"':''} aria-expanded="${!!o}">${g}<span class="chev" aria-hidden="true">${o?'\u25B2':'\u25BC'}</span></button>${o?`<div class="sub">${f.map(l=>`<button class="nav" data-v="${l[0]}" ${S.v===l[0]?'aria-current="page"':''}>${l[1]}</button>`).join('')}</div>`:''}`}).join('')||'<p class="u">No menu matches.</p>'}
+function render(){const a=document.activeElement&&document.activeElement.id;navRender();$('#page').innerHTML={plan:planView,req:reqView,stock:stockView,items:itemsView,rec:recView,waste:wasteView}[S.v]();if(a==='ss'){const e=$('#ss');e.focus();e.setSelectionRange(99,99)}}
+const go=v=>{S.v=v;$('#side').classList.remove('open');render();scrollTo(0,0)};
+function dlg(h){const d=$('#dlg');d.innerHTML=h;d.showModal();const c=$('#cx');if(c)c.onclick=()=>d.close();return d}
+const opts=(a,sel)=>a.map(i=>`<option value="${i.id}" ${i.id===sel?'selected':''}>${esc(i.n)} (${i.u})</option>`).join('');
+
+function itemDlg(id){const i=id?it(id):{n:'',t:S.tab,u:'kg',s:0,avg:0,m:0};
+ const lock=id&&(S.rec[id]||usedIn(id).length);const d=dlg(`<h2>${id?'Edit':'Add'} item</h2><form id="fm"><div class="f"><label for="n">Name</label><input id="n" value="${esc(i.n)}"></div><div class="f"><label for="t">Type</label><select id="t" ${id?'disabled':''}>${['RM','SFG','FG'].map(t=>`<option value="${t}" ${i.t===t?'selected':''}>${T[t]}</option>`).join('')}</select>${id?'<span class="u">Locked after creation because recipes depend on the type.</span>':''}</div><div class="f"><label for="u">Base unit</label><select id="u" ${lock?'disabled':''}>${['kg','l','pcs'].map(u=>`<option ${i.u===u?'selected':''}>${u}</option>`).join('')}</select>${lock?'<span class="u">Locked because recipes use this item in this unit.</span>':''}</div><div class="f"><label for="m">Minimum threshold</label><input id="m" type="number" min="0" step="any" value="${i.m||0}"></div><div class="f" id="av"><label for="a">4-week same-weekday average sold (FG)</label><input id="a" type="number" min="0" step="any" value="${i.avg||0}"></div><div id="e"></div><div class="acts"><button type="button" class="btn" id="cx">Cancel</button><button class="btn p">Save</button></div></form>`);
+ const tg=()=>$('#av').style.display=$('#t').value==='FG'?'':'none';$('#t').onchange=tg;tg();
+ $('#fm').onsubmit=e=>{e.preventDefault();const n=$('#n').value.trim(),er=[];
+  if(!n)er.push('Name is required.');if(S.items.some(x=>x.id!==id&&x.n.toLowerCase()===n.toLowerCase()))er.push('An item with this name exists.');
+  if(er.length){$('#e').innerHTML=er.map(x=>`<p class="err">${x}</p>`).join('');return}
+  const o={n,t:$('#t').value,u:$('#u').value,m:+$('#m').value||0,avg:+$('#a').value||0};if(id)Object.assign(it(id),o);else{o.id='i'+(++S.uid);o.s=0;S.items.push(o);S.tab=o.t}
+  d.close();toast(id?'Item saved':'Item added with zero stock. Use Stock levels to add quantity.');render()}}
+function recDlg(id,pre){const r=id?S.rec[id]:{out:1,in:[{id:'',q:1}]},ins=r.in.map(x=>({...x})),cand=S.items.filter(i=>i.t!=='RM'&&(i.id===id||!S.rec[i.id]));
+ if(!id&&!cand.length){toast('Every SFG and FG already has a recipe. Add a new item first.');return}
+ const d=dlg(`<h2>${id?'Edit':'New'} recipe</h2><form id="fm"><div class="f"><label for="o">Produces</label><select id="o" ${id?'disabled':''}>${opts(cand,id||pre)}</select></div><div class="f"><label for="oq">Output per batch</label><input id="oq" type="number" min="0" step="any" value="${r.out}"></div><div class="f"><label>Ingredients (per batch)</label><div id="rows"></div><button type="button" class="btn s" id="ad">Add ingredient</button></div><div id="e"></div><div class="acts"><button type="button" class="btn" id="cx">Cancel</button><button class="btn p">Publish recipe</button></div></form>`);
+ const draw=()=>{const me=id||$('#o').value;$('#rows').innerHTML=ins.map((x,k)=>`<div class="row"><select data-k="${k}" aria-label="Ingredient ${k+1}"><option value="">Select item</option>${opts(S.items.filter(i=>i.id!==me),x.id)}</select><input type="number" min="0" step="any" value="${x.q}" data-k="${k}" aria-label="Quantity ${k+1}"><button type="button" class="btn s d" data-r="${k}" aria-label="Remove ingredient ${k+1}">X</button></div>`).join('')};
+ draw();$('#o').onchange=draw;$('#ad').onclick=()=>{ins.push({id:'',q:1});draw()};
+ $('#rows').onchange=e=>{const k=e.target.dataset.k;if(k!=null)e.target.tagName==='SELECT'?ins[k].id=e.target.value:ins[k].q=+e.target.value};
+ $('#rows').onclick=e=>{const k=e.target.dataset.r;if(k!=null){ins.splice(k,1);draw()}};
+ $('#fm').onsubmit=e=>{e.preventDefault();const me=id||$('#o').value,out=+$('#oq').value,er=[];
+  if(!(out>0))er.push('Output must be positive.');if(!ins.length)er.push('Add at least one ingredient.');if(ins.some(x=>!x.id||!(x.q>0)))er.push('Every ingredient needs an item and a positive quantity.');
+  if(new Set(ins.map(x=>x.id)).size<ins.length)er.push('An ingredient appears twice.');if(cyc(me,ins))er.push('This recipe would create a cycle.');
+  if(er.length){$('#e').innerHTML=er.map(x=>`<p class="err">${x}</p>`).join('');return}
+  S.rec[me]={out,in:ins};d.close();toast('Recipe saved');render()}}
+function ask(t,m,ok,cb,no){const d=dlg(`<h2>${t}</h2><p>${m}</p><div class="acts"><button type="button" class="btn" id="cx">${no||'Cancel'}</button><button class="btn p" id="ok">${ok}</button></div>`);$('#ok').onclick=()=>{d.close();cb()}}
+function startDlg(id){const c=it(id),r=S.rec[id],p=planned()[id]||0,rem=Math.max(0,p-(S.prod[id]||0));
+ const d=dlg(`<h2>Start batch: ${esc(c.n)}</h2><form id="fm"><div class="f"><label for="bq">Batch output (${c.u})</label><input id="bq" type="number" min="0" step="any" value="${rem||r.out}"></div><div id="chk"></div><div class="acts"><button type="button" class="btn" id="cx">Cancel</button><button class="btn p">Issue inputs and start batch</button></div></form>`);
+ const chk=()=>{const q=+$('#bq').value,l=r.in.map(x=>({c:it(x.id),n:q/r.out*x.q})),bad=l.filter(x=>x.n>x.c.s+1e-9);d._bad=bad.length;d._l=l;d._q=q;
+  $('#chk').innerHTML=`<table style="min-width:0"><thead><tr><th>Input</th><th class="r">Issue</th><th class="r">Stock</th></tr></thead><tbody>${l.map(x=>`<tr><td>${esc(x.c.n)}</td><td class="r">${nf(x.n,x.c.u)}<span class="u">${x.c.u}</span></td><td class="r">${nf(x.c.s,x.c.u)}<span class="u">${x.c.u}</span></td></tr>`).join('')}</tbody></table>`+(bad.length?`<p class="err">Insufficient: ${bad.map(x=>esc(x.c.n)).join(', ')}. Manager override reason required.</p><div class="f"><label for="ov">Override reason</label><textarea id="ov" rows="2"></textarea></div>`:'')};
+ $('#bq').oninput=chk;chk();
+ $('#fm').onsubmit=e=>{e.preventDefault();if(!(d._q>0)){return}if(d._bad&&!($('#ov')?.value.trim())){$('#ov').focus();return}
+  d._l.forEach(x=>x.c.s=Math.max(0,x.c.s-x.n));S.issued=true;const bt={no:'B-'+String(++S.bn).padStart(3,'0'),id,q:d._q,t:hhmm(),st:'In progress',out:null,ov:d._bad&&$('#ov')?$('#ov').value.trim():''};S.bat.push(bt);d.close();toast('Batch '+bt.no+' started. Record output when it finishes.');render()}}
+function outDlg(no){const bt=S.bat.find(b=>b.no===no),id=bt.id,tq=bt.q,c=it(id);const d=dlg(`<h2>Record output: ${esc(c.n)} (${bt.no})</h2><p class="u">Batch target ${nf(tq,c.u)} ${c.u}. Inputs were issued at ${bt.t}.</p><form id="fm"><div class="f"><label for="uo">Usable output (${c.u})</label><input id="uo" type="number" min="0" step="any" value="${tq}"></div><div id="rs"></div><div class="acts"><button type="button" class="btn" id="cx">Close</button><button class="btn p">Post output</button></div></form>`);
+ const chk=()=>{const o=+$('#uo').value;$('#rs').innerHTML=o!==tq?`<div class="f"><label for="rr">${o===0?'Failure reason':'Reason for difference from target'} (required)</label><textarea id="rr" rows="2"></textarea></div>`:''};$('#uo').oninput=chk;
+ $('#fm').onsubmit=e=>{e.preventDefault();const o=+$('#uo').value,rr=$('#rr');if(!(o>=0)||(rr&&!rr.value.trim()))return;c.s+=o;S.prod[id]=(S.prod[id]||0)+o;bt.st=o===0?'Failed':'Completed';bt.out=o;
+  if(o<tq)S.waste.unshift({id,q:tq-o,pct:(tq-o)/tq*100,r:rr.value.trim(),note:o===0?'Failed batch':'Shortfall vs batch target',auto:1,b:bt.no,t:hhmm()});
+  d.close();toast(o<tq?'Output posted. Process loss recorded automatically.':'Output posted to stock');render()}}
+function wasteDlg(){const d=dlg(`<h2>Record waste</h2><form id="fm"><div class="f"><label for="wi">Item</label><select id="wi">${opts(S.items)}</select></div><div class="f"><label for="wq">Quantity</label><input id="wq" type="number" min="0" step="any"></div><div class="f"><label for="wr">Reason</label><select id="wr"><option>Spoilage / expired</option><option>Dropped or spilled</option><option>Over-prepared</option><option>Quality reject</option></select></div><div class="f"><label for="wn">Note (optional)</label><input id="wn"></div><div id="e"></div><div class="acts"><button type="button" class="btn" id="cx">Cancel</button><button class="btn p">Save</button></div></form>`);
+ $('#fm').onsubmit=e=>{e.preventDefault();const c=it($('#wi').value),q=+$('#wq').value;if(!(q>0)||q>c.s+1e-9){$('#e').innerHTML=`<p class="err">Enter a quantity above 0 and up to stock (${nf(c.s,c.u)} ${c.u}).</p>`;return}
+  c.s-=q;S.waste.unshift({id:c.id,q,r:$('#wr').value,note:$('#wn').value,t:hhmm()});d.close();toast('Waste recorded, stock reduced');render()}}
+
+document.addEventListener('click',e=>{const t=e.target.closest('button');if(!t)return;const D=t.dataset;
+ if(D.v||D.go)go(D.v||D.go);else if(D.g){S.g[D.g]=!(S.g[D.g]??has(D.g));render()}else if(D.st){S.st=D.st;render()}else if(D.adj)adjDlg(D.adj);else if(D.nrec)recDlg(null,D.nrec);else if(D.lrm){S.pl=S.pl.filter(x=>x!==D.lrm);delete S.plan[D.lrm];render()}else if(D.reset)ask('Reset plan?','Restores suggested quantities, clears the uplift and puts every finished good back in the plan.','Reset',()=>{S.plan={};S.uplift=0;S.pl=S.items.filter(i=>i.t==='FG').map(i=>i.id);render()});else if(t.id==='addl'){const v=$('#al').value;if(v&&!S.pl.includes(v)){S.pl.push(v);render()}}else if(t.id==='revise'){S.rvm=true;S.tmp={};render()}else if(t.id==='rvx'){S.rvm=false;S.tmp={};render()}else if(t.id==='cancelplan')ask('Cancel this plan?','The plan returns to draft and the baseline is discarded. This is only possible before any batch starts.','Yes, cancel plan',()=>{S.conf=S.cur=null;S.revs=[];S.rvm=false;render();toast('Plan is back in draft')},'Keep plan');else if(t.id==='rvs'){const ch=Object.entries(S.tmp).filter(([k,v])=>v!==S.cur[k]);if(!ch.length){toast('No quantities changed');return}const bad=ch.filter(([k,v])=>v<(S.prod[k]||0));if(bad.length){toast('Cannot go below output already produced: '+bad.map(([k])=>it(k).n).join(', '));return}const d=dlg(`<h2>Save revision</h2><p>${ch.map(([k,v])=>esc(it(k).n)+': '+nf(S.cur[k],it(k).u)+' to '+nf(v,it(k).u)).join('<br>')}</p><div class="f"><label for="rr">Reason (required)</label><textarea id="rr" rows="2"></textarea></div><div class="acts"><button type="button" class="btn" id="cx">Cancel</button><button class="btn p" id="ok">Save revision</button></div>`);$('#ok').onclick=()=>{const r=$('#rr').value.trim();if(!r){$('#rr').focus();return}d.close();applyRev(ch,r)}}else if(D.tab){S.tab=D.tab;render()}else if(D.x!=null){S.open[D.x]=!S.open[D.x];render()}
+ else if(D.new)itemDlg();else if(D.edit)itemDlg(D.edit);
+ else if(D.del){const u=usedIn(D.del);if(u.length){toast('In use by recipe: '+u.map(k=>it(k).n).join(', '));return}
+  ask('Delete item?','This removes the item and its recipe. It cannot be undone.','Delete',()=>{S.items=S.items.filter(i=>i.id!==D.del);delete S.rec[D.del];render()});}
+ else if(D.rec!=null)recDlg(D.rec||null);
+ else if(D.rdel!=null){ask('Delete recipe?','The item stays, but its BoM is removed.','Delete',()=>{delete S.rec[D.rdel];render()})}
+ else if(D.start)startDlg(D.start);else if(D.out)outDlg(D.out);else if(t.id==='wnew')wasteDlg();else if(t.id==='menu')$('#side').classList.toggle('open');
+ else if(t.id==='confirm'){if(missing().length){toast('Add recipes for every finished good first');return}
+  const sh=shorts();ask('Confirm this plan?','This locks the planned quantities as the baseline for Waste & variance and unlocks Start batch for the kitchen.'+(sh.length?' <b>Short raw materials: '+sh.map(([k])=>esc(it(k).n)).join(', ')+'.</b> Batches that start short need a manager override reason.':''),'Confirm plan',()=>{S.conf=planned();S.cur={...S.conf};toast('Plan confirmed. Batches can now be started.');render()})}});
+document.addEventListener('change',e=>{const t=e.target;if(t.id==='up'){S.uplift=Math.max(0,Math.min(100,+t.value||0));S.plan={};render()}
+ else if(t.dataset.rq){S.tmp[t.dataset.rq]=Math.max(0,+t.value||0)}else if(t.dataset.q){S.plan[t.dataset.q]=Math.max(0,+t.value||0);render();document.querySelector(`[data-q="${t.dataset.q}"]`)?.focus()}});
+document.addEventListener('input',e=>{if(e.target.id==='sq')navRender();else if(e.target.id==='ss'){S.sq=e.target.value;render()}});
+render();
+</script></body></html>
